@@ -26,8 +26,8 @@ class LandingScreen extends StatelessWidget {
       height: screenHeight * .4,
       alignment: Alignment.center,
       padding: EdgeInsets.only(
-        left: screenHeight * .04,
-        right: screenHeight * .04,
+        left: screenHeight * .025,
+        right: screenHeight * .025,
         top: screenHeight * .12,
         bottom: screenHeight * .1,
       ),

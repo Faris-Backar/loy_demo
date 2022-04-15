@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:loyverse_demo/db/functions/db_functions.dart';
+import 'package:loyverse_demo/db/models/data_model.dart';
+import 'package:loyverse_demo/presentation/screens/landing_screen.dart';
+import 'package:loyverse_demo/presentation/widgets/drawer_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SalesScreen extends StatelessWidget {
   const SalesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    getAllDatat();
     return Scaffold(
       appBar: AppBar(
         title: Text('Ticket'),
@@ -20,50 +26,9 @@ class SalesScreen extends StatelessWidget {
           IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_rounded))
         ],
       ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            Container(
-              height: 150,
-            ),
-            ListTile(
-              leading: Icon(Icons.shopping_basket),
-              title: Text('Sales'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.receipt),
-              title: Text('Reciept'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.list_rounded),
-              title: Text('Items'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onTap: () {},
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.bar_chart_outlined),
-              title: Text('Back Office'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.shopping_basket),
-              title: Text('Apps'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.info_outline_rounded),
-              title: Text('Support'),
-              onTap: () {},
-            ),
-          ],
-        ),
+      drawer: const DrawerWidget(),
+      body: Center(
+        child: Column(),
       ),
     );
   }

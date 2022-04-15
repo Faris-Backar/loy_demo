@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:loyverse_demo/core/config/config.dart';
 import 'package:loyverse_demo/presentation/screens/landing_screen.dart';
+import 'package:loyverse_demo/presentation/screens/sales_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+const SAVE_KEY_NAME = 'UserLoggedIn';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,11 +19,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 4), () {
+    checkUserLoggedIn();
+  }
+
+  gotoLogin() async {
+    await Future.delayed(
+      Duration(seconds: 2),
+    );
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => const LandingScreen(),
+    ));
+  }
+
+  checkUserLoggedIn() async {
+    final _sharedPrefs = await SharedPreferences.getInstance();
+    final userLoggedIn = _sharedPrefs.getBool(SAVE_KEY_NAME);
+    if (userLoggedIn == null || userLoggedIn == false) {
+      gotoLogin();
+    } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => const LandingScreen(),
+        builder: (context) => const SalesScreen(),
       ));
-    });
+    }
   }
 
   @override
