@@ -1,34 +1,96 @@
 import 'package:flutter/material.dart';
-import 'package:loyverse_demo/db/functions/db_functions.dart';
-import 'package:loyverse_demo/db/models/data_model.dart';
-import 'package:loyverse_demo/presentation/screens/landing_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loyverse_demo/bloc/item/item_bloc.dart';
+import 'package:loyverse_demo/core/config/config.dart';
+import 'package:loyverse_demo/presentation/bloc/item_bloc.dart';
 import 'package:loyverse_demo/presentation/widgets/drawer_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class SalesScreen extends StatelessWidget {
+class SalesScreen extends StatefulWidget {
   const SalesScreen({Key? key}) : super(key: key);
 
   @override
+  State<SalesScreen> createState() => _SalesScreenState();
+}
+
+class _SalesScreenState extends State<SalesScreen> {
+  @override
   Widget build(BuildContext context) {
-    getAllDatat();
+    final _height = Config.screenHeight(context);
+    final _width = Config.screenHeight(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ticket'),
+        title: const Text('Ticket'),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.person_add_alt_1_rounded),
+            icon: const Icon(Icons.person_add_alt_1_rounded),
           ),
-          IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_rounded))
+          IconButton(
+              onPressed: () {}, icon: const Icon(Icons.more_vert_rounded))
         ],
       ),
       drawer: const DrawerWidget(),
-      body: Center(
-        child: Column(),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              height: 80,
+              width: double.infinity,
+              color: Colors.lightGreen,
+              child: const Center(
+                child: Text(
+                  'CHARGE \n   0.00',
+                  style: TextStyle(
+                    color: Colors.white38,
+                    fontSize: 19,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: _height * 0.714,
+            width: _width,
+            color: Colors.white,
+            child: Column(
+              children: [
+                Container(
+                  height: _height * 0.1,
+                  width: _width,
+                  color: Colors.black,
+                ),
+                BlocBuilder<ItemBloc, ItemState>(
+                  builder: (context, state) {
+                    if(state is GetAllItemsInitial){}
+                    return Container();
+                  },
+                ),
+                Container(
+                  height: 70,
+                  width: _width,
+                  color: Colors.blue,
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white),
+                      ),
+                      Text('Books')
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

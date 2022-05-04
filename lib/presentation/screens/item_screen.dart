@@ -8,8 +8,9 @@ class ItemScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Items'),
+        title: const Text('Items'),
       ),
       drawer: const DrawerWidget(),
       body: Column(
@@ -21,25 +22,25 @@ class ItemScreen extends StatelessWidget {
               ));
             },
             title: const Text('Items'),
-            leading: Icon(Icons.list_rounded),
+            leading: const Icon(Icons.list_rounded),
           ),
-          Divider(
+          const Divider(
             indent: 60,
           ),
           ListTile(
             onTap: () {},
             title: const Text('Categories'),
-            leading: Icon(Icons.add_to_photos),
+            leading: const Icon(Icons.add_to_photos),
           ),
-          Divider(
+          const Divider(
             indent: 60,
           ),
           ListTile(
             onTap: () {},
             title: const Text('Discount'),
-            leading: Icon(Icons.discount_rounded),
+            leading: const Icon(Icons.discount_rounded),
           ),
-          Divider(
+          const Divider(
             indent: 60,
           ),
         ],

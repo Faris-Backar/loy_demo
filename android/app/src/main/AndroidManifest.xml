@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.loyverse_demo">
+    <uses-permission android:name="android.permission.CAMERA"/>
+   
    <application
         android:label="loyverse_demo"
         android:name="${applicationName}"
