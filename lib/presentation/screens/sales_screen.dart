@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loyverse_demo/bloc/item/item_bloc.dart';
 import 'package:loyverse_demo/core/config/config.dart';
 import 'package:loyverse_demo/presentation/bloc/item_bloc.dart';
 import 'package:loyverse_demo/presentation/widgets/drawer_widget.dart';
@@ -66,7 +65,7 @@ class _SalesScreenState extends State<SalesScreen> {
                 ),
                 BlocBuilder<ItemBloc, ItemState>(
                   builder: (context, state) {
-                    if(state is GetAllItemsInitial){}
+                    if (state is GetAllItemsInitial) {}
                     return Container();
                   },
                 ),

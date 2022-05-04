@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:loyverse_demo/bloc/item/item_bloc.dart';
 import 'package:loyverse_demo/db/db.dart';
 import 'package:loyverse_demo/presentation/widgets/text_form_field_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -157,246 +155,249 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
           ),
         ],
       ),
-      body: BlocConsumer<ItemBloc, ItemState>(
-        listener: (context, state) {
-          if (state is AddItemSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Successfully Added')));
-          }
-        },
-        builder: (context, state) {
-          if (state is AddItemLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Material(
-                  elevation: 3,
-                  // color: Colors.black54,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextFormWidget(
-                            nameController: nameController,
-                            labelText: 'Name',
-                            errorText: '',
-                            validatorFunction: (value) {
-                              if (value!.isEmpty) {
-                                return 'Enter a valid Name!';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          DropdownButtonFormField<String>(
-                            // value: dropdownValue,
-                            items: <String>[
-                              'No categories',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue!;
-                              });
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Text('Sold by'),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          ListTile(
-                            title: const Text('Each'),
-                            leading: Radio(
-                                value: 1,
-                                groupValue: val,
-                                onChanged: (value) {
-                                  setState(() {
-                                    soldBy = 'Each';
-                                    val = value as int;
-                                  });
-                                }),
-                          ),
-                          ListTile(
-                            title: const Text('Weight'),
-                            leading: Radio(
-                                value: 2,
-                                groupValue: val,
-                                onChanged: (value) {
-                                  setState(() {
-                                    soldBy = 'Weight';
-                                    val = value as int;
-                                  });
-                                }),
-                          ),
-                          TextFormWidget(
-                            nameController: priceController,
-                            labelText: 'Price',
-                            errorText: '',
-                            validatorFunction: (value) {
-                              if (value!.isEmpty) {
-                                return 'Enter a valid Price!';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          TextFormWidget(
-                            nameController: skuController,
-                            labelText: 'Sku',
-                            errorText: '',
-                            validatorFunction: (value) {
-                              if (value!.isEmpty) {
-                                return 'Enter a valid sku!';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          TextFormWidget(
-                            nameController: barcodeController,
-                            labelText: 'Barcode',
-                            errorText: '',
-                            validatorFunction: (value) {
-                              if (value!.isEmpty) {
-                                return 'Enter a valid Barcode ID!';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Material(
-                  elevation: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: const Text(
-                          'Inventory',
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      ListTile(
-                        title: Text('Track Stock '),
-                        trailing: CupertinoSwitch(
-                          value: switchValue,
-                          onChanged: (value) {
-                            setState(() {
-                              switchValue = value;
-                            });
-                          },
-                          // activeTrackColor: Colors.green,
-                          // trackColor: Colors.green,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Material(
-                  elevation: 10,
+      // body: BlocConsumer<ItemBloc, ItemState>(
+      // listener: (context, state) {
+      // if (state is AddItemSuccessState) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      // const SnackBar(content: Text('Successfully Added')));
+      // }
+      // },
+      // builder: (context, state) {
+      //   if (state is AddItemLoadingState) {
+      //     return const Center(
+      //       child: CircularProgressIndicator(),
+      //     );
+      //   }
+      // return
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            Material(
+              elevation: 3,
+              // color: Colors.black54,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          'Representation on POS',
-                          style: TextStyle(
-                              color: Colors.green,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                        ),
+                      TextFormWidget(
+                        nameController: nameController,
+                        labelText: 'Name',
+                        errorText: '',
+                        validatorFunction: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter a valid Name!';
+                          }
+                          return null;
+                        },
                       ),
-                      //  ToggleButtons(children: [
-                      //    Container(
-                      //      height: 70,
-                      //      width: 70,
-                      //      color: Colors.red,
-                      //    ),
-                      //  ], isSelected: )
-                      SizedBox(
-                        height: 50,
-                        child: Row(
-                          children: [
-                            Radio(
-                                value: 0,
-                                groupValue: radioGroupValue,
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    radioGroupValue = value!;
-                                  });
-                                  pageController.jumpToPage(value!);
-                                }),
-                            const Text('Color and Shape'),
-                            const SizedBox(width: 20),
-                            Radio(
-                                value: 1,
-                                groupValue: radioGroupValue,
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    radioGroupValue = value!;
-                                  });
-                                  pageController.jumpToPage(value!);
-                                }),
-                            const Text('Image'),
-                            const SizedBox(
-                              height: 20,
-                            )
-                          ],
-                        ),
+                      const SizedBox(
+                        height: 10,
                       ),
-                      SizedBox(
-                        height: 300,
-                        child: PageView.builder(
-                            controller: pageController,
-                            itemCount: pages.length,
-                            itemBuilder: (context, index) => pages[index],
-                            onPageChanged: (int value) {
-                              radioGroupValue = value;
+                      DropdownButtonFormField<String>(
+                        // value: dropdownValue,
+                        items: <String>[
+                          'No categories',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text('Sold by'),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ListTile(
+                        title: const Text('Each'),
+                        leading: Radio(
+                            value: 1,
+                            groupValue: val,
+                            onChanged: (value) {
+                              setState(() {
+                                soldBy = 'Each';
+                                val = value as int;
+                              });
                             }),
-                      )
+                      ),
+                      ListTile(
+                        title: const Text('Weight'),
+                        leading: Radio(
+                            value: 2,
+                            groupValue: val,
+                            onChanged: (value) {
+                              setState(() {
+                                soldBy = 'Weight';
+                                val = value as int;
+                              });
+                            }),
+                      ),
+                      TextFormWidget(
+                        nameController: priceController,
+                        labelText: 'Price',
+                        errorText: '',
+                        validatorFunction: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter a valid Price!';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormWidget(
+                        nameController: skuController,
+                        labelText: 'Sku',
+                        errorText: '',
+                        validatorFunction: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter a valid sku!';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormWidget(
+                        nameController: barcodeController,
+                        labelText: 'Barcode',
+                        errorText: '',
+                        validatorFunction: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter a valid Barcode ID!';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 10),
                     ],
                   ),
-                )
-              ],
+                ),
+              ),
             ),
-          );
-        },
+            const SizedBox(height: 10),
+            Material(
+              elevation: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: const Text(
+                      'Inventory',
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Track Stock '),
+                    trailing: CupertinoSwitch(
+                      value: switchValue,
+                      onChanged: (value) {
+                        setState(() {
+                          switchValue = value;
+                        });
+                      },
+                      // activeTrackColor: Colors.green,
+                      // trackColor: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Material(
+              elevation: 10,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Representation on POS',
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  //  ToggleButtons(children: [
+                  //    Container(
+                  //      height: 70,
+                  //      width: 70,
+                  //      color: Colors.red,
+                  //    ),
+                  //  ], isSelected: )
+                  SizedBox(
+                    height: 50,
+                    child: Row(
+                      children: [
+                        Radio(
+                            value: 0,
+                            groupValue: radioGroupValue,
+                            onChanged: (int? value) {
+                              setState(() {
+                                radioGroupValue = value!;
+                              });
+                              pageController.jumpToPage(value!);
+                            }),
+                        const Text('Color and Shape'),
+                        const SizedBox(width: 20),
+                        Radio(
+                            value: 1,
+                            groupValue: radioGroupValue,
+                            onChanged: (int? value) {
+                              setState(() {
+                                radioGroupValue = value!;
+                              });
+                              pageController.jumpToPage(value!);
+                            }),
+                        const Text('Image'),
+                        const SizedBox(
+                          height: 20,
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 300,
+                    child: PageView.builder(
+                        controller: pageController,
+                        itemCount: pages.length,
+                        itemBuilder: (context, index) => pages[index],
+                        onPageChanged: (int value) {
+                          radioGroupValue = value;
+                        }),
+                  )
+                ],
+              ),
+            )
+          ],
+          //   ),
+          // );
+          // },
+          // ),
+        ),
       ),
     );
   }
