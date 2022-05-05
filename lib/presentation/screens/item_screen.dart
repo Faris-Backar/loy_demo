@@ -3,6 +3,7 @@ import 'package:loyverse_demo/presentation/screens/all_item_screen.dart';
 import 'package:loyverse_demo/presentation/widgets/drawer_widget.dart';
 
 class ItemScreen extends StatelessWidget {
+  static const routeName = '/ItemScreen';
   const ItemScreen({Key? key}) : super(key: key);
 
   @override
@@ -12,7 +13,9 @@ class ItemScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Items'),
       ),
-      drawer: const DrawerWidget(),
+      drawer: const DrawerWidget(
+        indexValue: 2,
+      ),
       body: Column(
         children: [
           ListTile(

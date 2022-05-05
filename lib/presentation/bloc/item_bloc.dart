@@ -29,7 +29,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
 
   createItems(CreateItemsEvent event, Emitter<ItemState> emit) async {
     emit(CreateItemsInitial());
-    final response = await db.insertNewItem(event.item);
+    final response = await db.addItem(event.item);
     emit(CreateItemsLoaded());
   }
 

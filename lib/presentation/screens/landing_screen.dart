@@ -4,6 +4,7 @@ import 'package:loyverse_demo/presentation/screens/login_screen.dart';
 import 'package:loyverse_demo/presentation/screens/registration_screen.dart';
 
 class LandingScreen extends StatelessWidget {
+  static const routeName = '/LandingScreen';
   const LandingScreen({Key? key}) : super(key: key);
 
   @override

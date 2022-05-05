@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loyverse_demo/presentation/widgets/text_form_field_widget.dart';
 
 class RegistrationScreen extends StatefulWidget {
+  static const routeName = '/RegistartionScreen';
   const RegistrationScreen({Key? key}) : super(key: key);
 
   @override

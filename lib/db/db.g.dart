@@ -8,27 +8,30 @@ part of 'db.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Item extends DataClass implements Insertable<Item> {
-  final int id;
+  final int? id;
   final String name;
   final String category;
   final String soldBy;
   final String barCode;
   final int price;
-  final int sku;
+  final int? sku;
+  final String? photo;
+  final int avatar;
   Item(
-      {required this.id,
+      {this.id,
       required this.name,
       required this.category,
       required this.soldBy,
       required this.barCode,
       required this.price,
-      required this.sku});
+      this.sku,
+      this.photo,
+      required this.avatar});
   factory Item.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Item(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       category: const StringType()
@@ -40,31 +43,46 @@ class Item extends DataClass implements Insertable<Item> {
       price: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}price'])!,
       sku: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sku'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}sku']),
+      photo: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}photo']),
+      avatar: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}avatar'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
     map['name'] = Variable<String>(name);
     map['category'] = Variable<String>(category);
     map['sold_by'] = Variable<String>(soldBy);
     map['bar_code'] = Variable<String>(barCode);
     map['price'] = Variable<int>(price);
-    map['sku'] = Variable<int>(sku);
+    if (!nullToAbsent || sku != null) {
+      map['sku'] = Variable<int?>(sku);
+    }
+    if (!nullToAbsent || photo != null) {
+      map['photo'] = Variable<String?>(photo);
+    }
+    map['avatar'] = Variable<int>(avatar);
     return map;
   }
 
   ItemsCompanion toCompanion(bool nullToAbsent) {
     return ItemsCompanion(
-      id: Value(id),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: Value(name),
       category: Value(category),
       soldBy: Value(soldBy),
       barCode: Value(barCode),
       price: Value(price),
-      sku: Value(sku),
+      sku: sku == null && nullToAbsent ? const Value.absent() : Value(sku),
+      photo:
+          photo == null && nullToAbsent ? const Value.absent() : Value(photo),
+      avatar: Value(avatar),
     );
   }
 
@@ -72,26 +90,30 @@ class Item extends DataClass implements Insertable<Item> {
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Item(
-      id: serializer.fromJson<int>(json['id']),
+      id: serializer.fromJson<int?>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       category: serializer.fromJson<String>(json['category']),
       soldBy: serializer.fromJson<String>(json['soldBy']),
       barCode: serializer.fromJson<String>(json['barCode']),
       price: serializer.fromJson<int>(json['price']),
-      sku: serializer.fromJson<int>(json['sku']),
+      sku: serializer.fromJson<int?>(json['sku']),
+      photo: serializer.fromJson<String?>(json['photo']),
+      avatar: serializer.fromJson<int>(json['avatar']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'id': serializer.toJson<int?>(id),
       'name': serializer.toJson<String>(name),
       'category': serializer.toJson<String>(category),
       'soldBy': serializer.toJson<String>(soldBy),
       'barCode': serializer.toJson<String>(barCode),
       'price': serializer.toJson<int>(price),
-      'sku': serializer.toJson<int>(sku),
+      'sku': serializer.toJson<int?>(sku),
+      'photo': serializer.toJson<String?>(photo),
+      'avatar': serializer.toJson<int>(avatar),
     };
   }
 
@@ -102,7 +124,9 @@ class Item extends DataClass implements Insertable<Item> {
           String? soldBy,
           String? barCode,
           int? price,
-          int? sku}) =>
+          int? sku,
+          String? photo,
+          int? avatar}) =>
       Item(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -111,6 +135,8 @@ class Item extends DataClass implements Insertable<Item> {
         barCode: barCode ?? this.barCode,
         price: price ?? this.price,
         sku: sku ?? this.sku,
+        photo: photo ?? this.photo,
+        avatar: avatar ?? this.avatar,
       );
   @override
   String toString() {
@@ -121,14 +147,16 @@ class Item extends DataClass implements Insertable<Item> {
           ..write('soldBy: $soldBy, ')
           ..write('barCode: $barCode, ')
           ..write('price: $price, ')
-          ..write('sku: $sku')
+          ..write('sku: $sku, ')
+          ..write('photo: $photo, ')
+          ..write('avatar: $avatar')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, name, category, soldBy, barCode, price, sku);
+  int get hashCode => Object.hash(
+      id, name, category, soldBy, barCode, price, sku, photo, avatar);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -139,17 +167,21 @@ class Item extends DataClass implements Insertable<Item> {
           other.soldBy == this.soldBy &&
           other.barCode == this.barCode &&
           other.price == this.price &&
-          other.sku == this.sku);
+          other.sku == this.sku &&
+          other.photo == this.photo &&
+          other.avatar == this.avatar);
 }
 
 class ItemsCompanion extends UpdateCompanion<Item> {
-  final Value<int> id;
+  final Value<int?> id;
   final Value<String> name;
   final Value<String> category;
   final Value<String> soldBy;
   final Value<String> barCode;
   final Value<int> price;
-  final Value<int> sku;
+  final Value<int?> sku;
+  final Value<String?> photo;
+  final Value<int> avatar;
   const ItemsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -158,6 +190,8 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     this.barCode = const Value.absent(),
     this.price = const Value.absent(),
     this.sku = const Value.absent(),
+    this.photo = const Value.absent(),
+    this.avatar = const Value.absent(),
   });
   ItemsCompanion.insert({
     this.id = const Value.absent(),
@@ -166,21 +200,25 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     required String soldBy,
     required String barCode,
     required int price,
-    required int sku,
+    this.sku = const Value.absent(),
+    this.photo = const Value.absent(),
+    required int avatar,
   })  : name = Value(name),
         category = Value(category),
         soldBy = Value(soldBy),
         barCode = Value(barCode),
         price = Value(price),
-        sku = Value(sku);
+        avatar = Value(avatar);
   static Insertable<Item> custom({
-    Expression<int>? id,
+    Expression<int?>? id,
     Expression<String>? name,
     Expression<String>? category,
     Expression<String>? soldBy,
     Expression<String>? barCode,
     Expression<int>? price,
-    Expression<int>? sku,
+    Expression<int?>? sku,
+    Expression<String?>? photo,
+    Expression<int>? avatar,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -190,17 +228,21 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       if (barCode != null) 'bar_code': barCode,
       if (price != null) 'price': price,
       if (sku != null) 'sku': sku,
+      if (photo != null) 'photo': photo,
+      if (avatar != null) 'avatar': avatar,
     });
   }
 
   ItemsCompanion copyWith(
-      {Value<int>? id,
+      {Value<int?>? id,
       Value<String>? name,
       Value<String>? category,
       Value<String>? soldBy,
       Value<String>? barCode,
       Value<int>? price,
-      Value<int>? sku}) {
+      Value<int?>? sku,
+      Value<String?>? photo,
+      Value<int>? avatar}) {
     return ItemsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -209,6 +251,8 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       barCode: barCode ?? this.barCode,
       price: price ?? this.price,
       sku: sku ?? this.sku,
+      photo: photo ?? this.photo,
+      avatar: avatar ?? this.avatar,
     );
   }
 
@@ -216,7 +260,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int>(id.value);
+      map['id'] = Variable<int?>(id.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -234,7 +278,13 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       map['price'] = Variable<int>(price.value);
     }
     if (sku.present) {
-      map['sku'] = Variable<int>(sku.value);
+      map['sku'] = Variable<int?>(sku.value);
+    }
+    if (photo.present) {
+      map['photo'] = Variable<String?>(photo.value);
+    }
+    if (avatar.present) {
+      map['avatar'] = Variable<int>(avatar.value);
     }
     return map;
   }
@@ -248,7 +298,9 @@ class ItemsCompanion extends UpdateCompanion<Item> {
           ..write('soldBy: $soldBy, ')
           ..write('barCode: $barCode, ')
           ..write('price: $price, ')
-          ..write('sku: $sku')
+          ..write('sku: $sku, ')
+          ..write('photo: $photo, ')
+          ..write('avatar: $avatar')
           ..write(')'))
         .toString();
   }
@@ -262,7 +314,7 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, false,
+      'id', aliasedName, true,
       type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
@@ -294,11 +346,21 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
   final VerificationMeta _skuMeta = const VerificationMeta('sku');
   @override
   late final GeneratedColumn<int?> sku = GeneratedColumn<int?>(
-      'sku', aliasedName, false,
+      'sku', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
+  final VerificationMeta _photoMeta = const VerificationMeta('photo');
+  @override
+  late final GeneratedColumn<String?> photo = GeneratedColumn<String?>(
+      'photo', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _avatarMeta = const VerificationMeta('avatar');
+  @override
+  late final GeneratedColumn<int?> avatar = GeneratedColumn<int?>(
+      'avatar', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, category, soldBy, barCode, price, sku];
+      [id, name, category, soldBy, barCode, price, sku, photo, avatar];
   @override
   String get aliasedName => _alias ?? 'items';
   @override
@@ -344,8 +406,16 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     if (data.containsKey('sku')) {
       context.handle(
           _skuMeta, sku.isAcceptableOrUnknown(data['sku']!, _skuMeta));
+    }
+    if (data.containsKey('photo')) {
+      context.handle(
+          _photoMeta, photo.isAcceptableOrUnknown(data['photo']!, _photoMeta));
+    }
+    if (data.containsKey('avatar')) {
+      context.handle(_avatarMeta,
+          avatar.isAcceptableOrUnknown(data['avatar']!, _avatarMeta));
     } else if (isInserting) {
-      context.missing(_skuMeta);
+      context.missing(_avatarMeta);
     }
     return context;
   }

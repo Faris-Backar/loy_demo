@@ -5,6 +5,7 @@ import 'package:loyverse_demo/presentation/widgets/text_form_field_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInScreen extends StatefulWidget {
+  static const routeName = '/LoginScreen';
   const LogInScreen({Key? key}) : super(key: key);
 
   @override

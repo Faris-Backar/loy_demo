@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loyverse_demo/presentation/screens/create_item_screen.dart';
 
 class AllItemScreen extends StatelessWidget {
+  static const routeName = '/AllItemScreen';
   const AllItemScreen({Key? key}) : super(key: key);
 
   @override
@@ -25,23 +26,23 @@ class AllItemScreen extends StatelessWidget {
             CircleAvatar(
               maxRadius: 70,
               backgroundColor: Colors.grey[350],
-              child: Icon(
+              child: const Icon(
                 Icons.list_sharp,
                 color: Colors.grey,
                 size: 100,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               'You have no items yet',
               style: TextStyle(color: Colors.grey, fontSize: 20),
             ),
-            SizedBox(
+            const SizedBox(
               height: 08,
             ),
-            Text(
+            const Text(
               'To add an item, press the (+) button',
               style: TextStyle(color: Colors.grey),
             )

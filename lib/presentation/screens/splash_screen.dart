@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const SAVE_KEY_NAME = 'UserLoggedIn';
 
 class SplashScreen extends StatefulWidget {
+  static const routeName = '/SplashScreen';
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
